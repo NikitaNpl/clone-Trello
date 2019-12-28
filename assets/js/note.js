@@ -39,33 +39,41 @@ const Note = {
 	dragstart (event) {
 		Note.dragged = this;
 		this.classList.add('dragged');
+		
 		event.stopPropagation();
 	},
 
 	dragend (event) {
+		event.stopPropagation();
+
 		Note.dragged = null;
 		this.classList.remove('dragged');
 		document.querySelectorAll('.note').forEach(x => x.classList.remove('under'));
-		event.stopPropagation();
 	},
 
 	dragenter (event) {
+		event.stopPropagation();
+
 		if(!Note.dragged || this === Note.dragged) return;
 		this.classList.add('under');
 	},
 
 	dragover (event) {
 		event.preventDefault();
+
 		if(!Note.dragged || this === Note.dragged) return;
 	},
 
 	dragleave (event) {
+		event.stopPropagation();
+
 		if(!Note.dragged || this === Note.dragged) return;
 		this.classList.remove('under');
 	},
 
 	drop (event) {
 		event.stopPropagation();
+
 		if(!Note.dragged || this === Note.dragged) return;
 
 		if(this.parentElement === Note.dragged.parentElement) {

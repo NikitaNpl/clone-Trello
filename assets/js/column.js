@@ -1,6 +1,7 @@
 const Column = {
 	idCounter: 4,
 	dragged: null,
+	dropped: null,
 	process (columnElement) {
 		const spanAction_addNote = columnElement.querySelector('[data-action-addNote]');
 
@@ -28,9 +29,6 @@ const Column = {
 
 		columnElement.addEventListener('dragstart', Column.dragstart)
 		columnElement.addEventListener('dragend', Column.dragend)
-		columnElement.addEventListener('dragenter', Column.dragenter)
-		columnElement.addEventListener('dragover', Column.dragover)
-		columnElement.addEventListener('dragleave', Column.dragleave)
 
 		columnElement.addEventListener('dragover', Column.dragover)
 		columnElement.addEventListener('drop', Column.drop)
@@ -39,29 +37,37 @@ const Column = {
 	dragstart (evet) {
 		Column.dragged = this;
 		Column.dragged.classList.add('dragged');
+
 		event.stopPropagation();
+
+		document.querySelectorAll('.note').forEach(noteElement => noteElement.removeAttribute('draggable'));
 	},
 
 	dragend (event) {
 		Column.dragged.classList.remove('dragged');
 		Column.dragged = null;
-	},
+		Column.dropped = null;
 
-	dragenter (event) {
-		if(!Column.dragged || Column.dragged === this) return;
-	},
-
-	dragover (event) {
-		event.preventDefault();
-		if(!Column.dragged || Column.dragged === this) return;
-	},
-
-	dragleave (event) {
-		if(!Column.dragged || Column.dragged === this) return;
+		document.querySelectorAll('.note').forEach(noteElement => noteElement.setAttribute('draggable', true));
 	},
 
 	dragover (event) {
 		event.preventDefault();
+		event.stopPropagation();
+
+		if(Column.dragged === this){
+			if(Column.dropped){
+				Column.dropped.classList.remove('under');
+			}
+			Column.dropped = null;
+		}
+
+		if(!Column.dragged || Column.dragged === this) return;
+
+		Column.dropped = this;
+		document.querySelectorAll('.column').forEach(columnElement => columnElement.classList.remove('under'));
+
+		this.classList.add('under');
 	},
 
 	drop () {
@@ -70,7 +76,18 @@ const Column = {
 		}
 
 		else if(Column.dragged) {
-			
+			const children = Array.from(document.querySelector('.columns').children);
+			const indexA = children.indexOf(this);
+			const indexB = children.indexOf(Column.dragged);
+
+			if(indexA < indexB) {
+				document.querySelector('.columns').insertBefore(Column.dragged, this);
+			} else {
+				document.querySelector('.columns').insertBefore(Column.dragged, this.nextElementSibling);
+			}
+
+			document.querySelectorAll('.column').forEach(columnElement => columnElement.classList.remove('under'));
+
 		}
 	}
 
