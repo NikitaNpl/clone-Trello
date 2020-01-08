@@ -14,8 +14,10 @@ const Application = {
         document.querySelectorAll('.column').forEach(columnElememt => {
             const column = {
                 id: parseInt(columnElememt.getAttribute('data-column-id')),
+                title: columnElememt.querySelector('.column-header').textContent,
                 noteIds: []
             };
+
             
             columnElememt.querySelectorAll('.note').forEach(noteElement => {
                 column.noteIds.push(parseInt(noteElement.getAttribute('data-note-id')))
@@ -31,8 +33,12 @@ const Application = {
             }
 
             object.notes.items.push(note);
-        })
 
+            console.table(note);
+            
+        })
+        
+        
         const json = JSON.stringify(object);
 
         localStorage.setItem('trello', json);
@@ -48,14 +54,18 @@ const Application = {
         const object = JSON.parse(localStorage.getItem('trello'));
         const getNoteById = id => object.notes.items.find(note => note.id === id);
 
-        for(const column of object.columns.items) {
-            const columnElememt = Column.create(column.id);
-            mountePoint.append(columnElememt);
+        for(const { id, title, noteIds } of object.columns.items) {
+            const column = new Column(id);
+            column.element.querySelector('.column-header').textContent = title;
             
-            for(const noteId of column.noteIds) {
-                const note = getNoteById(noteId);
-                const noteElement = Note.create(note.id, note.content);
-                columnElememt.querySelector('[data-notes]').append(noteElement);
+            mountePoint.append(column.element);
+            
+            for(const noteId of noteIds) {
+                const { id, content } = getNoteById(noteId);
+                console.log(content);
+                const note = new Note(id, content);
+                column.add(note);
+
             }
         }
     }
