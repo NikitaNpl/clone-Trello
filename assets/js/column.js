@@ -3,14 +3,16 @@ class Column {
 		const instance = this;
 		this.notes = [];
 
+		
 		const element = this.element = document.createElement('div');
+		
 		element.classList.add('column');
 		element.setAttribute('draggable', true);
-
-		// element.setAttribute('data-column-id', id ? id : Column.idCounter++);
+		console.log(id);
 		if (id) {
 			element.setAttribute('data-column-id', id);
 		} else {
+			console.log(Column.idCounter);
 			element.setAttribute('data-column-id', Column.idCounter++);
 		}
 
@@ -54,7 +56,10 @@ class Column {
 
 		element.addEventListener('dragover', this.dragover.bind(this))
 		element.addEventListener('drop', this.drop.bind(this))
+
 	}
+
+	
 
 	add (...notes) {
 		for(const note of notes) {
@@ -78,6 +83,7 @@ class Column {
 		Column.dragged.classList.remove('dragged');
 		Column.dragged = null;
 		Column.dropped = null;
+		// Column.delete = null;
 
 		document.querySelectorAll('.note').forEach(noteElement => noteElement.setAttribute('draggable', true));
 
@@ -98,6 +104,7 @@ class Column {
 		}
 
 		if(!Column.dragged || Column.dragged === this.element) return;
+
 
 		Column.dropped = this.element;
 		document.querySelectorAll('.column').forEach(columnElement => columnElement.classList.remove('under'));
@@ -130,3 +137,4 @@ class Column {
 Column.idCounter = 0;
 Column.dragged = null;
 Column.dropped = null;
+Column.delete = null;

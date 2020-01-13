@@ -127,3 +127,11 @@ body {
 .note.under {
 	opacity: 0.5;
 }
+
+.delete span img {
+    position: fixed; 
+    bottom: 1%; 
+    right: 1%;
+    width: 100px;
+    height: 120px;
+}

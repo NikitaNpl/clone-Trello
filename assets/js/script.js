@@ -1,3 +1,4 @@
+console.clear();
 Application.load();
 
 document.querySelector('[data-action-addColumn]').addEventListener('click', function(event) {

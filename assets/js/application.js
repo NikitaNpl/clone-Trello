@@ -10,6 +10,7 @@ const Application = {
                 items: []
             }
         }
+        
 
         document.querySelectorAll('.column').forEach(columnElememt => {
             const column = {
@@ -24,6 +25,9 @@ const Application = {
             });
 
             object.columns.items.push(column);
+
+            
+            
         })
 
         document.querySelectorAll('.note').forEach(noteElement => {
@@ -31,10 +35,10 @@ const Application = {
                 id: parseInt(noteElement.getAttribute('data-note-id')),
                 content: noteElement.textContent
             }
-
+            
             object.notes.items.push(note);
 
-            console.table(note);
+            
             
         })
         
@@ -62,11 +66,15 @@ const Application = {
             
             for(const noteId of noteIds) {
                 const { id, content } = getNoteById(noteId);
-                console.log(content);
+                
                 const note = new Note(id, content);
                 column.add(note);
 
             }
         }
+
+        Column.idCounter = object.columns.idCounter || 0;
+        Note.idCounter = object.notes.idCounter || 0;
+
     }
 }

@@ -1,15 +1,20 @@
 class Note {
 	constructor (id = null, content = '') {
 		const instance = this;
+		
 		const element = this.element = document.createElement('div');
+		
 
 		element.classList.add('note');
 		element.setAttribute('draggable', 'true');
-		// element.setAttribute('data-note-id', id ? id : Note.idCounter++);
+
+		console.log(id);
 		if (id) {
 			element.setAttribute('data-note-id', id);
 		} else {
+			console.log(Note.idCounter);
 			element.setAttribute('data-note-id', Note.idCounter++);
+			
 		}
 
 		element.textContent = content;
@@ -37,6 +42,7 @@ class Note {
 			element.addEventListener('dragover', this.dragover.bind(this))
 			element.addEventListener('dragleave', this.dragleave.bind(this))
 			element.addEventListener('drop', this.drop.bind(this))
+
 	}
 
 	get closetColumn () {
