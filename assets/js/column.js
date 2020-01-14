@@ -34,7 +34,7 @@ class Column {
 
 			Application.save();
 
-		})
+		});
 
 		const headerElement = element.querySelector('.column-header');
 
@@ -42,14 +42,24 @@ class Column {
 			element.removeAttribute('draggable');
 			headerElement.setAttribute('contenteditable', 'true');
 			headerElement.focus();
-		})
+		});
+
+		element.addEventListener('keypress', function(event){
+			console.log(headerElement.textContent.trim().length)
+			if (event.keyCode == 13 && headerElement.textContent.trim().length > 0) {
+				element.setAttribute('draggable', 'true');
+				headerElement.removeAttribute('contenteditable');
+			} else {
+				return;
+			}
+		});
 
 		headerElement.addEventListener('blur', function (event) {
 			element.setAttribute('draggable', 'true');
 			headerElement.removeAttribute('contenteditable');
 
 			Application.save();
-		})
+		});
 
 		element.addEventListener('dragstart', this.dragstart.bind(this))
 		element.addEventListener('dragend', this.dragend.bind(this))

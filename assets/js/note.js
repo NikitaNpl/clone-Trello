@@ -24,17 +24,37 @@ class Note {
 			element.removeAttribute('draggable');
 			instance.closetColumn.removeAttribute('draggable');
 			element.focus();
-		})
+		});
 
+		
+		element.addEventListener('keypress', function(event){
+			if (event.keyCode == 13) {
+				event.preventDefault();
+				element.removeAttribute('contenteditable');
+				element.setAttribute('draggable', 'true');
+				
+				if(element.textContent.trim().length == 0) {
+					element.remove();
+					Note.idCounter--;
+				}
+			} else {
+				return;
+			}
+		});
+		
 		element.addEventListener('blur', function (event) {
 			element.removeAttribute('contenteditable');
 			instance.closetColumn.setAttribute('draggable', 'true');
 			element.setAttribute('draggable', 'true');
 
-			if(!element.textContent.trim().length) element.remove();
+			if(!element.textContent.trim().length) {
+				element.remove();
+				Note.idCounter--;
+			}
 
 			Application.save();
-		})
+		});
+		
 
 			element.addEventListener('dragstart', this.dragstart.bind(this))
 			element.addEventListener('dragend', this.dragend.bind(this))
