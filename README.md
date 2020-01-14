@@ -1,2 +1,2 @@
 # clone-Trello
-[Предпросмотр](file:///I:/Layout/GITHUB/clone-Trello/index.html)
+[Предпросмотр](https://nikitanpl.github.io/clone-Trello/index.html)
