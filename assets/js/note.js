@@ -28,7 +28,7 @@ class Note {
 
 		
 		element.addEventListener('keypress', function(event){
-			if (event.keyCode == 13) {
+			if (event.keyCode == 13 && element.textContent.trim().length > 0) {
 				event.preventDefault();
 				element.removeAttribute('contenteditable');
 				element.setAttribute('draggable', 'true');
